@@ -214,7 +214,11 @@
                     <div class="flex flex-col border border-stone-600 p-3 flex-1 text-white">
                         <div class="flex justify-between items-center mb-2">
                             <span class="flex items-center justify-center w-7 h-7 rounded" :class="isToday(day) ? 'bg-white text-black' : ''">{{ format(day, "dd") }}</span>
-                            <button class="flex items-center justify-center w-7 h-7 rounded hover:bg-white hover:text-black cursor-pointer" @click="showNewEvent = true; newEventDate = day">+</button>
+                            <button class="flex items-center justify-center w-7 h-7 rounded hover:bg-white hover:text-black cursor-pointer group" @click="showNewEvent = true; newEventDate = day">
+                                <svg class="w-5 h-5 text-white group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                                </svg>
+                            </button>
                         </div>
 
                         <div v-for="event in showEventsForDay(day)" :key="event.id" class="event-item mb-2 p-2 bg-stone-800 rounded cursor-pointer" @click="showCard(event)">
