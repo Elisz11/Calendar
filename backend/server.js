@@ -6,7 +6,7 @@ const pool = require('./db/database');
 const initializeDatabase = require('./db/init');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -27,7 +27,8 @@ app.get('/api/events', async (req, res) => {
 // Create new event
 app.post('/api/events', async (req, res) => {
     const { title, description, date, subject, type, progress } = req.body;
-    
+    console.log('Create request received');
+
     if (!title || !date || !subject || !type || !progress) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
@@ -41,6 +42,8 @@ app.post('/api/events', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+
+    console.log('Create request completed');
 });
 
 // DELETE event by ID
@@ -61,12 +64,16 @@ app.delete('/api/events/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+
+    console.log('Delete request completed');
 });
 
 // UPDATE event by ID
 app.put('/api/events/:id', async (req, res) => {
     const { id } = req.params;
     const { title, description, date, subject, type, progress } = req.body;
+    console.log('Update request received with id:', id);
+
     try {
         const result = await pool.query(
             'UPDATE events SET title=$1, description=$2, date=$3, subject=$4, type=$5, progress=$6, updated_at=CURRENT_TIMESTAMP WHERE id=$7 RETURNING *',
@@ -79,8 +86,10 @@ app.put('/api/events/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+
+    console.log('Update request completed with id:', id);
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running`);
 });

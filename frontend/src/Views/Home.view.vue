@@ -4,7 +4,7 @@
     import CardComponent from "../Components/Card.component.vue";
     import NewEventComponent from "../Components/NewEvent.component.vue";
 
-    const API_URL = "http://localhost:5000/api";
+    const API_URL = "/api";
 
     const startWeek = ref(new Date());
 
@@ -232,7 +232,7 @@
             </div>
         </div>
 
-        <NewEventComponent :date="newEventDate" @new-event="insertEvent" v-if="showNewEvent" @close="showNewEvent = false"/>
+        <NewEventComponent :date="newEventDate" @new-event="insertEvent" v-if="showNewEvent" @close="showNewEvent = false; newEventDate = null"/>
         <CardComponent :card="card" v-if="showCardBool == true" @close="showCardBool = false" @card="handleUpdateCard" @delete="deleteEvent(card.id)"/>
 
     </div>
