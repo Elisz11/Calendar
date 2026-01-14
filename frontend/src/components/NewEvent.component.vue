@@ -45,7 +45,7 @@
 
 <template>
 	<div class="fixed inset-0 bg-[rgba(0,0,0,0.5)] z-50 flex items-center justify-center" @click.self="$emit('close')">
-		<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-stone-800 p-6 rounded-lg shadow-lg text-white">
+		<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-stone-800 p-6 rounded-lg shadow-lg text-white w-100">
 			<span class="text-xl">New event</span>
 
 			<button class="absolute right-3 top-3 text-white text-xl" @click="$emit('close')">x</button>
@@ -64,7 +64,7 @@
 				<input class="border" v-model="newEvent.subject" required />
 
 				<label>Type</label>
-				<select class="border" v-model="newEvent.type" required>
+				<select class="border bg-stone-800" v-model="newEvent.type" required>
 					<option value="Assignment">Assignment</option>
 					<option value="Exam">Exam</option>
 					<option value="Oral exam">Oral exam</option>
@@ -72,7 +72,7 @@
 				</select>
 
 				<label>Progress</label>
-				<select class="border" v-model="newEvent.progress" required>
+				<select class="border bg-stone-800" v-model="newEvent.progress" required>
 					<option value="Not started">Not started</option>
 					<option value="In progress">In progress</option>
 					<option value="Completed">Completed</option>
