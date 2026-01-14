@@ -1,8 +1,8 @@
 <script setup>
     import { add, format, isToday, isSameDay, startOfWeek } from "date-fns";
     import { ref, onMounted, computed } from "vue";
-    import CardComponent from "./Card.component.vue";
-    import NewEventComponent from "./NewEvent.component.vue";
+    import CardComponent from "../Components/Card.component.vue";
+    import NewEventComponent from "../Components/NewEvent.component.vue";
 
     const API_URL = "http://localhost:5000/api";
 
@@ -175,7 +175,7 @@
         <nav class="flex justify-between p-2">
             <span class="text-4xl text-white m-3">Calendar</span>
             <div class="flex">
-                <button class="bg-white text-black p-2 rounded w-30 m-3 cursor-pointer" @click="showNewEvent = true">New Event</button>
+                <button class="bg-white text-black p-2 rounded w-30 m-3 cursor-pointer" @click=" newEventDate == null; showNewEvent = true">New Event</button>
                 <button class="cursor-pointer bg-white rounded m-3 w-10 flex items-center justify-center">
                     <svg class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.75 4H19M7.75 4a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 4h2.25m13.5 6H19m-2.25 0a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 10h11.25m-4.5 6H19M7.75 16a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 16h2.25"/>

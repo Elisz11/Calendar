@@ -14,7 +14,7 @@
 	const newEvent = ref({
 		title: "",
 		description: "",
-		date: format(props.date, "yyyy-MM-dd"),
+		date: props.date == null ? "" : format(props.date, "yyyy-MM-dd"),
 		subject: "",
 		type: "",
 		progress: ""
