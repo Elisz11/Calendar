@@ -68,7 +68,6 @@
     }
 
     async function insertEvent(eventData) {
-
         try {
             const response = await fetch(`${API_URL}/events`, {
                 method: "POST",

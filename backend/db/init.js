@@ -19,6 +19,15 @@ async function initializeDatabase() {
         await pool.query(`
             CREATE INDEX IF NOT EXISTS idx_events_date ON events(date)
         `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT ESIST subjects (
+                id SERIAL PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                color VARCHAR(7) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
         
         console.log('Database tables initialized');
     } catch (err) {
