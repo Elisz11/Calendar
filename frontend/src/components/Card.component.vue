@@ -1,5 +1,34 @@
 <script setup>
-    import { ref, watch } from "vue";
+    import { ref, watch, onMounted} from "vue";
+
+    const API_URL = "/api";
+
+	onMounted(async () => {
+        await fetchSubjects();
+    });
+
+	const subjects = ref([]);
+	const loading = ref(false);
+
+    async function fetchSubjects() {
+        try {
+            loading.value = true;
+            const response = await fetch(`${API_URL}/subjects`);
+            const data = await response.json();
+            
+            subjects.value = data.map(subject => {
+                return {
+                    id: subject.id,
+                    title: subject.title,
+                    color: subject.color
+                };
+            });
+        } catch (err) {
+            console.error(err);
+        } finally {
+            loading.value = false;
+        }
+    }
 
     const props = defineProps({
         card: {

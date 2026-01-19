@@ -1,6 +1,35 @@
 <script setup>
-	import { ref } from "vue";
+	import { ref, onMounted } from "vue";
 	import { format } from "date-fns";
+
+	const API_URL = "/api";
+
+	onMounted(async () => {
+        await fetchSubjects();
+    });
+
+	const subjects = ref([]);
+	const loading = ref(false);
+
+    async function fetchSubjects() {
+        try {
+            loading.value = true;
+            const response = await fetch(`${API_URL}/subjects`);
+            const data = await response.json();
+            
+            subjects.value = data.map(subject => {
+                return {
+                    id: subject.id,
+                    title: subject.title,
+                    color: subject.color
+                };
+            });
+        } catch (err) {
+            console.error(err);
+        } finally {
+            loading.value = false;
+        }
+    }
 
 	const props = defineProps({
 		date: {
@@ -8,7 +37,7 @@
 			required: false
 		}
 	});
-
+	
 	const emit = defineEmits(["new-event", "close"]);
 
 	const newEvent = ref({
@@ -40,7 +69,7 @@
 
 		emit("close");
 	}
-	
+
 </script>
 
 <template>
@@ -61,7 +90,9 @@
 				<input type="date" class="border" v-model="newEvent.date" required />
 
 				<label>Subject</label>
-				<input class="border" v-model="newEvent.subject" required />
+				<select class="border bg-stone-800" v-model="newEvent.subject" required>
+					<option v-for="subject in subjects">{{ subjects }}</option>
+				</select>
 
 				<label>Type</label>
 				<select class="border bg-stone-800" v-model="newEvent.type" required>

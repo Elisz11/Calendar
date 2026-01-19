@@ -10,13 +10,13 @@
     const startWeek = ref(new Date());
 
     const monday = computed(() =>
-    startOfWeek(startWeek.value, { weekStartsOn: 1 })
+        startOfWeek(startWeek.value, { weekStartsOn: 1 })
     );
 
     const weekDays = computed(() =>
-    Array.from({ length: 7 }, (_, i) =>
-        add(monday.value, { days: i })
-    )
+        Array.from({ length: 7 }, (_, i) =>
+            add(monday.value, { days: i })
+        )
     );
 
     function nextWeek() {
@@ -108,6 +108,32 @@
         }
     }
 
+    async function handleUpdateCard(eventData) {
+        const index = events.value.findIndex(e => e.id === eventData.id);
+
+        events.value[index] = {
+            ...events.value[index],
+            Title: eventData.title,
+            Description: eventData.description,
+            Date: new Date(eventData.date),
+            Subject: eventData.subject,
+            Type: eventData.type,
+            Progress: eventData.progress
+        };
+
+        try {
+            const response = await fetch(`${API_URL}/events/${eventData.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(eventData)
+            });
+
+            if (!response.ok) throw new Error("Failed to sync with server");
+        } catch (err) {
+            console.error("Sync error:", err);
+        }
+    }
+
     function showEventsForDay(day) {
         if (events.value.length === 0) {
             return [];
@@ -139,32 +165,6 @@
             progress: event.Progress
         };
         showCardBool.value = true;
-    }
-
-    async function handleUpdateCard(eventData) {
-        const index = events.value.findIndex(e => e.id === eventData.id);
-
-        events.value[index] = {
-            ...events.value[index],
-            Title: eventData.title,
-            Description: eventData.description,
-            Date: new Date(eventData.date),
-            Subject: eventData.subject,
-            Type: eventData.type,
-            Progress: eventData.progress
-        };
-
-        try {
-            const response = await fetch(`${API_URL}/events/${eventData.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(eventData)
-            });
-
-            if (!response.ok) throw new Error("Failed to sync with server");
-        } catch (err) {
-            console.error("Sync error:", err);
-        }
     }
 
 </script>
