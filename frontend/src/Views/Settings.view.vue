@@ -5,7 +5,7 @@
 
     const colors = ["white", "black", "blue", "yellow", "green", "orange"];
 
-    const API_URL = "/api";
+    const API_URL = import.meta.env.VITE_API_URL;
 
 	onMounted(async () => {
         await fetchSubjects();

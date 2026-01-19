@@ -1,4 +1,4 @@
-const pool = require('./database');
+import pool from './database.js';
 
 async function initializeDatabase() {
     try {
@@ -35,4 +35,4 @@ async function initializeDatabase() {
     }
 }
 
-module.exports = initializeDatabase;
+export default initializeDatabase;

@@ -1,11 +1,12 @@
 <script setup>
+    
     import { add, format, isToday, isSameDay, startOfWeek } from "date-fns";
     import { ref, onMounted, computed } from "vue";
     import CardComponent from "../Components/Card.component.vue";
     import NewEventComponent from "../Components/NewEvent.component.vue";
     import NavbarComponent from "../Components/Navbar.component.vue";
 
-    const API_URL = "/api";
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const startWeek = ref(new Date());
 
