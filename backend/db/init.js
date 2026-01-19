@@ -21,7 +21,7 @@ async function initializeDatabase() {
         `);
 
         await pool.query(`
-            CREATE TABLE IF NOT ESIST subjects (
+            CREATE TABLE IF NOT EXISTS subjects (
                 id SERIAL PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
                 color VARCHAR(7) NOT NULL,
