@@ -41,6 +41,7 @@
 
     onMounted(async () => {
         await fetchEvents();
+        await fetchSubjects();
     });
 
     async function fetchEvents() {
@@ -168,6 +169,33 @@
         showCardBool.value = true;
     }
 
+	const subjects = ref([]);
+
+    async function fetchSubjects() {
+        try {
+            loading.value = true;
+            const response = await fetch(`${API_URL}/subjects`);
+            const data = await response.json();
+            
+            subjects.value = data.map(subject => {
+                return {
+                    id: subject.id,
+                    title: subject.title,
+                    color: subject.color
+                };
+            });
+        } catch (err) {
+            console.error(err);
+        } finally {
+            loading.value = false;
+        }
+    }
+
+    function getSubjectColor(subjectTitle) {
+        const subject = subjects.value.find(s => s.title === subjectTitle);
+        return subject ? subject.color : "transparent";
+    }
+
 </script>
 
 <template>
@@ -209,11 +237,19 @@
                             </button>
                         </div>
 
-                        <div v-for="event in showEventsForDay(day)" :key="event.id" class="event-item mb-2 p-2 bg-stone-800 rounded cursor-pointer" @click="showCard(event)">
-                            <strong >{{ event.Title }}</strong><br>
-                            Subject: {{ event.Subject }}<br>
-                            Type: {{ event.Type }}<br>
-                            Progress: {{ event.Progress }}
+                        <div v-for="event in showEventsForDay(day)" :key="event.id" class="flex flex-col event-item mb-2 p-2 bg-stone-800 rounded cursor-pointer" @click="showCard(event)">
+                            <span class="font-bold text-lg leading-tight">{{ event.Title }}</span>
+                            <div class="flex items-center gap-2 mt-1">
+                                <div 
+                                    :style="{ backgroundColor: getSubjectColor(event.Subject) }"
+                                    class="w-2 h-2 rounded-full"
+                                ></div>
+                                <span class="text-xs text-stone-400">{{ event.Subject }}</span>
+                            </div>
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs px-2 py-0.5 bg-stone-700 rounded text-stone-300">{{ event.Type }}</span>
+                                <span class="text-xs font-medium" :class="event.Progress === 'Completed' ? 'text-green-400' : 'text-blue-400', event.Progress === 'Not started' ? 'text-red-400' : 'text-blue-400'">{{ event.Progress }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

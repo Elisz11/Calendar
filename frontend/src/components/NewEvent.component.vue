@@ -90,7 +90,7 @@
 
 				<label>Subject</label>
 				<select class="border bg-stone-800" v-model="newEvent.subject" required>
-					<option v-for="subject in subjects">{{ subjects }}</option>
+					<option v-for="subject in subjects">{{ subject.title }}</option>
 				</select>
 
 				<label>Type</label>

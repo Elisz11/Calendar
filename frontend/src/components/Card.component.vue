@@ -77,7 +77,9 @@
                 <input type="date" class="border" v-model="localCard.date" required />
 
                 <label>Subject</label>
-                <input class="border" required v-model="localCard.subject" />
+				<select class="border bg-stone-800" v-model="localCard.subject" required>
+					<option v-for="subject in subjects">{{ subject.title }}</option>
+				</select>
 
                 <label>Type</label>
                 <select class="border bg-stone-800" v-model="localCard.type" required>
