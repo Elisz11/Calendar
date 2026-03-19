@@ -248,7 +248,7 @@
                             </div>
                             <div class="flex justify-between items-center mt-2">
                                 <span class="text-xs px-2 py-0.5 bg-stone-700 rounded text-stone-300">{{ event.Type }}</span>
-                                <span class="text-xs font-medium" :class="event.Progress === 'Completed' ? 'text-green-400' : 'text-blue-400', event.Progress === 'Not started' ? 'text-red-400' : 'text-blue-400'">{{ event.Progress }}</span>
+                                <span class="text-xs font-medium" :class="event.Progress === 'Completed' ? 'text-green-400' : 'text-yellow-400', event.Progress === 'Not started' ? 'text-red-400' : 'text-yellow-400'">{{ event.Progress }}</span>
                             </div>
                         </div>
                     </div>
