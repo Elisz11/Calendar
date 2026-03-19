@@ -23,8 +23,17 @@ async function initializeDatabase() {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS subjects (
                 id SERIAL PRIMARY KEY,
-                title VARCHAR(255) NOT NULL,
+                title VARCHAR(255) UNIQUE NOT NULL,
                 color VARCHAR(7) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                username VARCHAR(255) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
