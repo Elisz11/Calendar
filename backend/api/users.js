@@ -10,15 +10,15 @@ router.get('/', async (req, res) => {
 
 // CREATE new user
 router.post('/', async (req, res) => {
-    const { username, password } = req.body;
+    const { username } = req.body;
 
-    if (!username || !password) {
+    if (!username) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
     const result = await pool.query(
-        'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *',
-        [username, password]
+        'INSERT INTO users (username) VALUES ($1) RETURNING *',
+        [username]
     );
     res.status(201).json(result.rows[0]);
 });
@@ -42,11 +42,11 @@ router.delete('/:id', async (req, res) => {
 // UPDATE user by ID
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { username, password } = req.body;
+    const { username } = req.body;
 
     const result = await pool.query(
-        'UPDATE users SET username=$1, password=$2, updated_at=CURRENT_TIMESTAMP WHERE id=$3 RETURNING *',
-        [username, password, parseInt(id)]
+        'UPDATE users SET username=$1, updated_at=CURRENT_TIMESTAMP WHERE id=$3 RETURNING *',
+        [username, parseInt(id)]
     );
 
     if (result.rows.length === 0) {
