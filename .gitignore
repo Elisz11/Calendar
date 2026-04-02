@@ -1,4 +1,4 @@
 .env
 .DS_Store
 
-backend/nginx/certs/*
+*.pem
