@@ -1,6 +1,9 @@
 services:
   nginx:
     image: nginx:latest
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: calendar_nginx
     restart: unless-stopped
     ports:
@@ -10,7 +13,7 @@ services:
       - API_HOST=api
       - API_PORT=5000
     volumes:
-      - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
     depends_on:
       - api
     networks:
