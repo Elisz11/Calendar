@@ -1,5 +1,4 @@
 import express from 'express';
-import cors from 'cors';
 import initializeDatabase from './db/init.js';
 import eventRoutes from './api/events.js';
 import subjectRoutes from './api/subjects.js'
@@ -8,7 +7,6 @@ import typesRoutes from './api/types.js'
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(cors());
 app.use(express.json());
 
 initializeDatabase();

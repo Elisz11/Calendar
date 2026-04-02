@@ -6,7 +6,7 @@
     import NewEventComponent from "../Components/NewEvent.component.vue";
     import NavbarComponent from "../Components/Navbar.component.vue";
 
-    const API_URL = import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.VITE_API_URL || '/api';
 
     const startWeek = ref(new Date());
 
