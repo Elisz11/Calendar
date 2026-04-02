@@ -149,8 +149,7 @@
                             <label class="block text-xs text-stone-400 mb-1 ml-1">Color</label>
                             <select 
                                 v-model="newSubjectColor"
-                                class="bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 appearance-none min-w-50px"
-                            >
+                                class="bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 appearance-none min-w-50px">
                                 <option v-for="color in colors" :key="color" :value="color">
                                     {{ color.charAt(0).toUpperCase() + color.slice(1) }}
                                 </option>

@@ -67,37 +67,39 @@
             <button class="absolute right-3 top-3 text-white text-xl" @click="close">x</button>
 
             <form class="flex flex-col text-white">
-                <label>Title</label>
-                <input class="border" required v-model="localCard.title"/>
+                <label class="text-stone-400">Title</label>
+                <input class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" required v-model="localCard.title"/>
 
-                <label>Description</label>
-                <input class="border" v-model="localCard.description"/>
+                <label class="text-stone-400">Description</label>
+                <input class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="localCard.description"/>
 
-                <label>Date</label>
-                <input type="date" class="border" v-model="localCard.date" required />
+                <label class="text-stone-400">Date</label>
+                <input type="date" class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="localCard.date" required />
 
-                <label>Subject</label>
-				<select class="border bg-stone-800" v-model="localCard.subject" required>
-					<option v-for="subject in subjects">{{ subject.title }}</option>
+                <label class="text-stone-400">Subject</label>
+				<select class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="localCard.subject" required>
+					<option v-for="subject in subjects" :key="subject.title" :value="subject.title">
+						{{ subject.title }}
+					</option>
 				</select>
 
-                <label>Type</label>
-                <select class="border bg-stone-800" v-model="localCard.type" required>
+                <label class="text-stone-400">Type</label>
+                <select class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="localCard.type" required>
                     <option value="Assignment">Assignment</option>
                     <option value="Exam">Exam</option>
                     <option value="Oral exam">Oral exam</option>
                     <option value="Presentation">Presentation</option>
                 </select>
 
-                <label>Progress</label>
-                <select class="border bg-stone-800" v-model="localCard.progress" required>
+                <label class="text-stone-400">Progress</label>
+                <select class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="localCard.progress" required>
                     <option value="Not started">Not started</option>
                     <option value="In progress">In progress</option>
                     <option value="Completed">Completed</option>
                 </select>
             </form>
 
-            <button class="mt-2 w-full bg-red-500 text-white p-1 rounded" @click="deleteCard">Delete</button>
+            <button class="w-full mt-2 bg-red-500 text-white p-2 rounded" type="submit" @click="deleteCard">Delete</button>
             <span class="text-red-700">{{ inputError }}</span>
         </div>
     </div>

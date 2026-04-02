@@ -40,8 +40,8 @@
     const newEventDate = ref(null);
 
     onMounted(async () => {
-        await fetchEvents();
         await fetchSubjects();
+        await fetchEvents();
     });
 
     async function fetchEvents() {
@@ -208,15 +208,15 @@
             <div class="flex justify-between items-center text-white">
                 <span class="text-xl m-3">{{ format(monday, "MMMM yyyy") }}</span>
                 <div class="flex items-center justify-center gap-1 mr-2">
-                    <button class="w-7 h-7 rounded bg-white cursor-pointer flex items-center justify-center" @click="prevWeek">
+                    <button class="w-7 h-7 rounded bg-white cursor-pointer flex items-center justify-center hover:scale-105 transition-all" @click="prevWeek">
                         <svg class="w-7 h-4.75 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m15 19-7-7 7-7"/>
                             </svg>
                     </button>
 
-                    <button class="w-17 h-7 rounded cursor-pointer flex items-center justify-center" @click="gotoCurrentWeek">Today</button>
+                    <button class="w-17 h-7 rounded cursor-pointer flex items-center justify-center hover:scale-105 transition-all" @click="gotoCurrentWeek">Today</button>
 
-                    <button class="w-7 h-7 rounded bg-white text-black cursor-pointer flex items-center justify-center" @click="nextWeek">
+                    <button class="w-7 h-7 rounded bg-white text-black cursor-pointer flex items-center justify-center hover:scale-105 transition-all" @click="nextWeek">
                         <svg class="w-7 h-4.75 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m9 5 7 7-7 7"/>
                             </svg>
@@ -225,9 +225,9 @@
             </div>
 
             <div class="flex w-full">
-                <div class="flex w-full flex-col min-h-100" v-for="day in weekDays">
-                    <span class="text-center text-stone-600">{{ format(day, "EEEE") }}</span>
-                    <div class="flex flex-col border border-stone-600 p-3 flex-1 text-white">
+                <div class="flex flex-1 flex-col min-h-100" v-for="day in weekDays">
+                    <span class="text-center text-stone-400">{{ format(day, "EEEE") }}</span>
+                    <div class="flex flex-col border border-stone-600 p-3 flex-1 text-white overflow-y-auto max-h-[calc(100vh-200px)]">
                         <div class="flex justify-between items-center mb-2">
                             <span class="flex items-center justify-center w-7 h-7 rounded" :class="isToday(day) ? 'bg-white text-black' : ''">{{ format(day, "dd") }}</span>
                             <button class="flex items-center justify-center w-7 h-7 rounded hover:bg-white hover:text-black cursor-pointer group" @click="showNewEvent = true; newEventDate = day">
@@ -237,8 +237,13 @@
                             </button>
                         </div>
 
-                        <div v-for="event in showEventsForDay(day)" :key="event.id" class="flex flex-col event-item mb-2 p-2 bg-stone-800 rounded cursor-pointer" @click="showCard(event)">
-                            <span class="font-bold text-lg leading-tight">{{ event.Title }}</span>
+                        <div
+                            v-for="event in showEventsForDay(day)"
+                            :key="event.id"
+                            @click="showCard(event)"
+                            class="flex flex-col event-item mb-2 p-2 bg-stone-800 rounded cursor-pointer hover:scale-105 transition-all"
+                        >
+                            <span class="font-bold text-lg leading-tight wrap-break-word line-clamp-1">{{ event.Title }}</span>
                             <div class="flex items-center gap-2 mt-1">
                                 <div 
                                     :style="{ backgroundColor: getSubjectColor(event.Subject) }"
@@ -246,8 +251,8 @@
                                 ></div>
                                 <span class="text-xs text-stone-400">{{ event.Subject }}</span>
                             </div>
-                            <div class="flex justify-between items-center mt-2">
-                                <span class="text-xs px-2 py-0.5 bg-stone-700 rounded text-stone-300">{{ event.Type }}</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs bg-stone-800 rounded text-stone-300">{{ event.Type }}</span>
                                 <span class="text-xs font-medium" :class="event.Progress === 'Completed' ? 'text-green-400' : 'text-yellow-400', event.Progress === 'Not started' ? 'text-red-400' : 'text-yellow-400'">{{ event.Progress }}</span>
                             </div>
                         </div>

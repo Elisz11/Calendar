@@ -79,30 +79,32 @@
 			<button class="absolute right-3 top-3 text-white text-xl" @click="$emit('close')">x</button>
 
 			<form @submit.prevent="sendNewEvent" class="flex flex-col">
-				<label>Title</label>
-				<input class="border" v-model="newEvent.title" required />
+				<label class="text-stone-400">Title</label>
+				<input class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="newEvent.title" required />
 
-				<label>Description</label>
-				<input class="border" v-model="newEvent.description" />
+				<label class="text-stone-400">Description</label>
+				<input class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="newEvent.description" />
 
-				<label>Date</label>
-				<input type="date" class="border" v-model="newEvent.date" required />
+				<label class="text-stone-400">Date</label>
+				<input type="date" class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="newEvent.date" required />
 
-				<label>Subject</label>
-				<select class="border bg-stone-800" v-model="newEvent.subject" required>
-					<option v-for="subject in subjects">{{ subject.title }}</option>
+				<label class="text-stone-400">Subject</label>
+				<select class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="newEvent.subject" required>
+					<option v-for="subject in subjects" :key="subject.title" :value="subject.title">
+						{{ subject.title }}
+					</option>
 				</select>
 
-				<label>Type</label>
-				<select class="border bg-stone-800" v-model="newEvent.type" required>
+				<label class="text-stone-400">Type</label>
+				<select class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="newEvent.type" required>
 					<option value="Assignment">Assignment</option>
 					<option value="Exam">Exam</option>
 					<option value="Oral exam">Oral exam</option>
 				<option value="Presentation">Presentation</option>
 				</select>
 
-				<label>Progress</label>
-				<select class="border bg-stone-800" v-model="newEvent.progress" required>
+				<label class="text-stone-400">Progress</label>
+				<select class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="newEvent.progress" required>
 					<option value="Not started">Not started</option>
 					<option value="In progress">In progress</option>
 					<option value="Completed">Completed</option>
