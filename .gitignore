@@ -1,2 +1,5 @@
 .env
 .DS_Store
+
+backend/nginx/certs/*.crt
+backend/nginx/certs/*.key
