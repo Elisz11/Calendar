@@ -11,13 +11,16 @@
         "Orange", 
         "Cyan", 
         "Purple", 
-        "Brown"
+        "Brown",
+        "Pink",
+        "Yellow"
     ];
 
     const API_URL = import.meta.env.VITE_API_URL;
 
 	onMounted(async () => {
         await fetchSubjects();
+        await fetchTypes();
     });
 
 	const subjects = ref([]);
@@ -97,27 +100,82 @@
         }
     }
 
-    async function handleUpdateSubject(subjectData) {
-        const index = subjects.value.findIndex(e => e.id === subjectData.id);
+    const types = ref([]);
+    const newTypeTitle = ref("");
+    const newTypeColor = ref("SlateGray");
 
-        subjects.value[index] = {
-            ...subjects.value[index],
-            title: subjectData.title,
-            color: subjectData.color
-        };
-
+    async function fetchTypes() {
         try {
-            const response = await fetch(`${API_URL}/subjects/${subjectData.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(subjectData)
+            loading.value = true;
+            const response = await fetch(`${API_URL}/types`);
+            const data = await response.json();
+            
+            types.value = data.map(type => {
+                return {
+                    id: type.id,
+                    title: type.title,
+                    color: type.color
+                };
             });
-
-            if (!response.ok) throw new Error("Failed to sync with server");
         } catch (err) {
-            console.error("Sync error:", err);
+            console.error(err);
+        } finally {
+            loading.value = false;
         }
     }
+
+    async function handleCreateType() {
+        if (!newTypeTitle.value.trim()) return;
+        
+        await insertTypes({
+            title: newTypeTitle.value,
+            color: newTypeColor.value
+        });
+        
+        newTypeTitle.value = "";
+        newTypeColor.value = "white";
+    }
+
+    async function insertTypes(typeData) {
+        try {
+            const response = await fetch(`${API_URL}/types`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: typeData.title,
+                    color: typeData.color
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || "Failed to create type");
+            }
+
+            await fetchTypes();
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    
+    async function handleDeleteType(typeId) {
+        if (!confirm("Are you sure you want to delete this type?")) return;
+        await deleteType(typeId);
+    }
+
+    async function deleteType(typeId) {
+        try {
+            const response = await fetch(`${API_URL}/types/${typeId}`, {
+                method: "DELETE"
+            });
+            if (!response.ok) throw new Error("Failed to delete type");
+            await fetchTypes();
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
 
 </script>
 
@@ -188,6 +246,75 @@
                             @click="handleDeleteSubject(subject.id)"
                             class="text-stone-500 hover:text-red-400 p-2 rounded-full hover:bg-red-400/10 transition-all opacity-0 group-hover:opacity-100"
                             title="Delete subject"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-xl font-semibold p-2">Manage Types</h2>
+                
+                <div class="bg-stone-800 p-4 rounded-lg mb-6 shadow-md">
+                    <h3 class="text-sm font-medium text-stone-400 mb-3 uppercase tracking-wider">Add New Types</h3>
+                    <form @submit.prevent="handleCreateType" class="flex flex-wrap gap-4 items-end">
+                        <div class="grow min-w-50px">
+                            <label class="block text-xs text-stone-400 mb-1 ml-1">Title</label>
+                            <input 
+                                v-model="newTypeTitle"
+                                type="text" 
+                                placeholder="Type title..."
+                                class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all"
+                                required
+                            >
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs text-stone-400 mb-1 ml-1">Color</label>
+                            <select 
+                                v-model="newTypeColor"
+                                class="bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 appearance-none min-w-50px">
+                                <option v-for="color in colors" :key="color" :value="color">
+                                    {{ color.charAt(0).toUpperCase() + color.slice(1) }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <button 
+                            type="submit"
+                            class="bg-white text-black font-medium px-6 py-2 rounded transition-colors"
+                        >
+                            Add Type
+                        </button>
+                    </form>
+                </div>
+
+                <div class="space-y-3">
+                    <div v-if="loading" class="text-stone-500 animate-pulse">Loading types...</div>
+                    <div v-else-if="types.length === 0" class="text-stone-500 italic p-4 text-center border border-dashed border-stone-700 rounded">
+                        No types created yet.
+                    </div>
+                    
+                    <div 
+                        v-for="type in types" 
+                        :key="type.id"
+                        class="flex items-center justify-between bg-stone-800/50 border border-stone-700 p-4 rounded-lg group hover:border-stone-500 transition-colors"
+                    >
+                        <div class="flex items-center gap-4">
+                            <div 
+                                :style="{ backgroundColor: type.color }"
+                                class="w-4 h-4 rounded-full shadow-sm"
+                            ></div>
+                            <span class="font-medium text-stone-200">{{ type.title }}</span>
+                        </div>
+                        
+                        <button 
+                            @click="handleDeleteType(type.id)"
+                            class="text-stone-500 hover:text-red-400 p-2 rounded-full hover:bg-red-400/10 transition-all opacity-0 group-hover:opacity-100"
+                            title="Delete type"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />

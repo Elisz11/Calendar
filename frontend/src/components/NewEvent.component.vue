@@ -5,9 +5,11 @@
 
 	onMounted(async () => {
         await fetchSubjects();
+		await fetchTypes();
     });
 
 	const subjects = ref([]);
+	const types = ref([]);
 	const loading = ref(false);
 
     async function fetchSubjects() {
@@ -21,6 +23,26 @@
                     id: subject.id,
                     title: subject.title,
                     color: subject.color
+                };
+            });
+        } catch (err) {
+            console.error(err);
+        } finally {
+            loading.value = false;
+        }
+    }
+
+	async function fetchTypes() {
+        try {
+            loading.value = true;
+            const response = await fetch(`${API_URL}/types`);
+            const data = await response.json();
+            
+            types.value = data.map(type => {
+                return {
+                    id: type.id,
+                    title: type.title,
+                    color: type.color
                 };
             });
         } catch (err) {
@@ -97,10 +119,9 @@
 
 				<label class="text-stone-400">Type</label>
 				<select class="w-full bg-stone-700 border border-stone-600 rounded px-3 py-2 focus:outline-none focus:ring-2 transition-all" v-model="newEvent.type" required>
-					<option value="Assignment">Assignment</option>
-					<option value="Exam">Exam</option>
-					<option value="Oral exam">Oral exam</option>
-				<option value="Presentation">Presentation</option>
+					<option v-for="type in types" :key="type.title" :value="type.title">
+						{{ type.title }}
+					</option>
 				</select>
 
 				<label class="text-stone-400">Progress</label>

@@ -3,6 +3,7 @@ import cors from 'cors';
 import initializeDatabase from './db/init.js';
 import eventRoutes from './api/events.js';
 import subjectRoutes from './api/subjects.js'
+import typesRoutes from './api/types.js'
 
 const app = express();
 const PORT = process.env.PORT;
@@ -14,6 +15,7 @@ initializeDatabase();
 
 app.use('/events', eventRoutes);
 app.use('/subjects', subjectRoutes);
+app.use('/types', typesRoutes);
 
 app.use((err, req, res, next) => {
     console.error('SERVER ERROR:', err.message);

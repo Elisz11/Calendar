@@ -28,6 +28,15 @@ async function initializeDatabase() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS types (
+                id SERIAL PRIMARY KEY,
+                title VARCHAR(255) UNIQUE NOT NULL,
+                color VARCHAR(7) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
         
         console.log('Database tables initialized');
     } catch (err) {
